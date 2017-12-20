@@ -1,0 +1,56 @@
+<div class='row'>
+    <div class="col-md-3 text-right"><img src="assets/images/logo.png" width="50" height="50"/></div>
+    <div class="col-md-4">
+        <div class="input-group" style="margin-top: 10px;">
+            <input id="typeahead-basic" type="text" class="form-control"
+            [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Type in Drug Name"/>
+            <span class="input-group-btn">
+                <button title="Search the drug" alt="Search the drug" class="btn" (click)="getChart()">
+                    <i class="icon-search pointer"></i>Go</button>
+            </span>
+        </div>
+    </div>
+    <div class="col-md-1" style="padding:15px;">   <app-modal #modal></app-modal> </div>
+    <div class="col-md-4" style="padding-left:15px;">
+      <a href="http://www.fda.gov/Safety/MedWatch/">
+         Report A Problem to<img src="https://www.accessdata.fda.gov/scripts/medwatch/images/mw_logo_ani_160px.gif">
+       </a>
+     </div>
+</div>
+
+<div class='row' style='padding-top:50px;'>
+  <div class="col-md-1"></div>
+  <div class="col-md-5">
+        <div *ngIf="labelNotFound">
+            <h3 style="text-align: center;">{{labelNotFound}}</h3>
+        </div>
+        <div *ngIf="!labelNotFound && (openFdaLabel || drugLabel)">
+          <h3 style="text-align: center;"> Drug Labeling Information</h3>
+          <div *ngIf="openFdaLabel">
+              <h4>Open FDA Drug Information</h4>
+              <dl class="dl-horizontal" *ngFor="let oFLK of openFdaLabelKeys" >
+                  <dt>{{oFLK}}</dt>
+                  <dd>{{formatLabel(openFdaLabel[oFLK])}}</dd>
+              </dl>
+          </div>
+          <div *ngIf="drugLabel">
+              <h4 >Other Information</h4>
+              <dl class="dl-horizontal" *ngFor="let dLK of drugLabelKeys" >
+                  <dt>{{dLK}}</dt>
+                  <dd>{{formatLabel(drugLabel[dLK])}}</dd>
+              </dl>
+          </div>
+        </div>
+  </div>
+  <div class="col-md-6" *ngIf="chartShow" style="font-size: 70%;" >
+    <h3>{{chartTitle}}</h3>
+    <nvd3 [options]="chartOptions" [data]="chartData" #nvd3chart></nvd3>
+  </div>
+</div>
+
+<!-- <hr>
+<pre>Model: {{ model | json }}</pre> -->
+
+
+
+<!-- {{drugList}} -->
